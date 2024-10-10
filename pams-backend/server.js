@@ -8,14 +8,17 @@ const mongoose = require("mongoose")
 
 
 // //routing
+const usersRouter = require('./routes/users/usersAccount');
+const employeesRouter = require('./routes/employees/employeesController')
+const patientsRouter = require('./routes/patients/patientsController')
 // const indexRouter = require('./routes/index');
 // const loginRouter = require('./routes/auth/login');
 // const logoutRouter = require('./routes/auth/logout')
 // // const signupRouter = require('./routes/auth/signup')
 // const verifyRouter = require('./routes/auth/verify')
-// const patientsRouter = require('./routes/patients/patientsController')
-// const usersRouter = require('./routes/users/usersAccount');
-// const employeesRouter = require('./routes/employees/employeesController')
+
+
+
 // const resultsRouter = require('./routes/results/resultsController')
 // const appointementRouter = require('./routes/appointement/appointementsController')
 // const dashboardRouter = require('./routes/dashboard/dashboard')
@@ -25,8 +28,8 @@ const mongoose = require("mongoose")
 
 const app = express();
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
 app.use(cors({
   origion: "http://localhost:9000"
@@ -41,27 +44,29 @@ app.use(cors({
   }));
 
 // app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/users', usersRouter);
+app.use('/employees', employeesRouter);
+app.use('/patients', patientsRouter);
 // app.use('/login', loginRouter);
 // app.use('/logout', logoutRouter);
 // // app.use('/signup', signupRouter);
 // app.use('/verify', verifyRouter);
-// app.use('/employees', employeesRouter);
-// app.use('/patients', patientsRouter);
+
+
 // app.use('/results', resultsRouter);
 // app.use('/appointement', appointementRouter)
 // app.use('/dashboard', dashboardRouter);
 // app.use('/resetpassword', restpassword);
 
 
-const URI = "mongodb://localhost:27017/HMS";
+// const URI = "mongodb://localhost:27017/HMS";
 // const conn = mongoose.connect(URI,{})
-const conn = mongoose.connect('mongodb://127.0.0.1:27017/hms');
+const conn = mongoose.connect('mongodb://127.0.0.1:27017/pams');
 // const connection = mongoose.connection;
 
 if(conn){
   mongoose.connection.once('open', () =>{
-    console.log('connetced to database')
+    console.log('connetced to database pams')
   })
 }else{
   console.log("database not connected")
