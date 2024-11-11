@@ -4,10 +4,9 @@ const jwt = require("jsonwebtoken");
 const auth = require('../../middleware/auth')
 const counter = require('../../models/counterModel')
 
-const result = require('../../models/resultsModel')
 const patient = require('../../models/patientModel')
 var moment = require('moment');
-const Result = require('../../models/resultsModel');
+const result = require('../../models/resultModel');
 moment().format();
 
 /*************Get all results ****************** */
@@ -99,6 +98,7 @@ router.get('/appointement/doctor/:uid', async (req, res) => {
 //********************************Register result***** */
 /************************************************** */
 router.post('/add', async (req, res) => {
+    try{
     const ch = await counter.findOne({ name: "auto" })
     // console.log(ch.id)
     if (ch == undefined) {
@@ -142,14 +142,26 @@ router.post('/add', async (req, res) => {
     const newReport = new result({ uid: id, transactionId, firstName, lastName, dob, gender, address, contactNo, status, doctorId, healthStatus, caseDescription, checkedDate, appointementDate })
     newReport.save()
         .then(repo => res.status(200).json({ "Message": "Successfully added" }))
+        .catch()
+    }catch(err) { err}
 })
 
 /************************Update patint tresults *******/
 /******************************************************** */
 router.post(`/update/:transacId`, async (req, res) => {
-    const uid = req.params.transacId;
+    const Inputuid = req.params.transacId;
     const status = req.body.status;
-    const findData = await appointement.findOne({ uid: uid })
+    if (isNaN(Inputuid) === true) {
+        return res.status(400).json({ Message: "Invalid uid. Please enter a number." })  // if uid is not a number
+    }
+    if(Inputuid === null){
+        // console.log('no id entered')
+        return res.status(400).json({Message: "No data found without Id"})
+    }
+    const findData = await result.findOne({ uid: Inputuid })
+    if(!(findData)){
+        return res.status(400).json({Message: "No data found in this Id"})
+    }
     const id = findData._id;
     result.findByIdAndUpdate(id)
         .then(newData => {

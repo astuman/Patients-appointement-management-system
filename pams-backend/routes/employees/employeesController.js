@@ -14,7 +14,6 @@ const userAccount = require('../../models/userAccountModel');
 const verify = require('../../models/verifyModel');
 const employee = require('../../models/employeesModel');
 const counter = require('../../models/counterModel');
-const patient = require('../../models/patientModel');
 
 /**   Fetching employees data********************/
 /*********************************************** */
@@ -48,7 +47,6 @@ router.post('/register', async (req, res) => {
   const lastSeq = await counter.findOne({ name: "auto" })
   const autoID = lastSeq.seq;
   // console.log(autoID)
-  
   const uid = autoID;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -64,7 +62,7 @@ router.post('/register', async (req, res) => {
   var token = randomToken(8)
   //all inputs should exist
   try {
-    if (!(firstName && lastName && gender && address && contactNo && departement && email && password)) {
+    if (!(firstName && lastName && gender && role && address && contactNo && departement && email && password)) {
       return res.status(400).json({ Message: 'please fill required fields' })
     }
     const checkEmp = await employee.findOne({ email: email })
@@ -130,7 +128,7 @@ router.post('/register/admin', async (req, res) => {
   var token = randomToken(8)
   //all data should exist
   try {
-    if (!(staffCode && firstName && lastName && gender && address && contactNo && departement && email && password)) {
+    if (!(staffCode && firstName && lastName && gender && role && address && contactNo && departement && email && password)) {
       return res.status(400).json({ Message: 'please fill required fields' })
     }
     const check = await employee.findOne({ email: email })
@@ -167,10 +165,16 @@ router.post('/register/admin', async (req, res) => {
 /*************  Update Employees by Admin *************************** */
 /****************************************************************** */
 router.post(`/update/:uid`, async (req, res) => {
-  const uid = req.params.uid;
+  const Inputuid = req.params.uid;
   const address = req.body.address;
   const contactNo = req.body.contactNo;
-  const findData = await employee.findOne({ uid: uid })
+  if(isNaN(Inputuid) === true){
+    return res.status(400).json({ Message: "Invalid uid. Please enter a number." })  // if uid is not a number
+  }
+  const findData = await employee.findOne({ uid: Inputuid })
+  if (!findData) {
+    return res.status(400).json({ Message: "ID not found" })  // if employee not found with this uid
+  }
   const id = findData._id;
   await employee.findByIdAndUpdate(id)
     .then(newData => {
@@ -188,12 +192,20 @@ router.post(`/update/:uid`, async (req, res) => {
 
 router.get('/find/:uid', async (req, res) => {
   const u = req.params.uid;
-  const uid = parseInt(u)
+  if(isNaN(u) === true){
+    return res.status(400).json({ Message: "Invalid uid. Please enter a number." })  // if uid is not a number
+  }
+  const Inputuid = parseInt(u)
   try {
-    const empdata = await employee.findOne({ uid: uid })
+    const checkData = await employee.findOne({ uid: Inputuid })
+    if (!checkData) {
+      return res.status(400).json({ Message: "Employee not found" })  // if employee not found with this uid
+    }
+    const empdata = await employee.findOne({ uid: Inputuid })
       .then((data) => {
-        res.status(200).json({"Message":"Employees found"})
+        res.status(200).json({Message :"Data found", "Data": data});
       })
+      
   } catch (err) {
     console.log(err)
   }
