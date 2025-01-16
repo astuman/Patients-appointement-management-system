@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const userAccount = require('../../models/userAccountModel')
 // const auth = require('../../middleware/auth')
-// const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 
 // import { useSignIn } from 'react-auth-kit'
 
@@ -36,6 +36,7 @@ router.get('/find/status/:status', async (req, res) => {
   } catch (err) {
     console.log(err)
   }
+  
 })
 
 //////////UPDATE////////////////////
@@ -73,8 +74,8 @@ router.put(`/reactiveaccount/:uid`, async (req, res) => {
 router.put(`/update/:uid`, async (req, res) => {
   const uid = req.params.uid;
   const password = req.body.password;
-  const encryptPass = await bcrypt.hash(password, 10)
-  const foundData = await userAccount.findOne({uid})
+  const encryptPass = await bcrypt.hash(password, 10);
+  const foundData = await userAccount.findOne({uid});
   const id = foundData._id;
   userAccount.findByIdAndUpdate(id)
     .then(newData => {

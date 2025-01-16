@@ -3,11 +3,9 @@ const router = express.Router()
 const jwt = require("jsonwebtoken");
 const auth = require('../../middleware/auth')
 const counter = require('../../models/counterModel')
-
 const appointement = require('../../models/appointementModel')
 const patient = require('../../models/patientModel')
-const result = require('../../models/resultsModel')
-
+const result = require('../../models/resultModel')
 var moment = require('moment');
 moment().format();
 
@@ -29,7 +27,6 @@ router.post('/add', async (req, res) => {
     }
     const current = new Date();
     const currentDate = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
-
     const lastSeq = await counter.findOne({ name: "auto" })
 
     const autoID = lastSeq.seq;
@@ -57,7 +54,7 @@ router.post('/add', async (req, res) => {
 
     const newAppo = new appointement({ uid: id, transactionId, firstName, lastName, dob, gender, address, contactNo, status, doctorId, healthStatus, caseDescription, checkedDate, appointementDate })
     newAppo.save()
-        .then(repo => res.status(200).json({ "Message": "Successfully added" }))
+        .then(appo => res.status(200).json({ "Message": "Successfully added" }))
 })
 
 /*************Get all appointments ****************** */
@@ -66,12 +63,17 @@ router.get(`/`, (req, res) => {
     appointement.find(req.params.uid)
         .then(results => res.status(200).json(results))
 })
+
+
+
 /****************************Get Patient by id */
 /******************************************** */
 router.get('/patient/:uid', async (req, res) => {
     const uid = req.params.uid;
+    const current = new Date();
+    const currentDate = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
     try {
-        await result.find({ uid: uid })
+        await appointement.find({ uid: uid, appointementDate: { $gt: new Date(currentDate) } })
             .then((data) => {
                 res.status(200).json(data)
             })
@@ -98,22 +100,46 @@ router.get('/doctor/:uid', async (req, res) => {
     }
 })
 
+
+router.get('/find/:tid', async (req, res) => {
+    const current = new Date();
+    const currentDate = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`;
+
+    const tid = req.params.tid;
+    // const appointementStatus = "onAppointement";
+    try {
+        await appointement.findOne({ transactionId: tid, appointementDate: { $gt: new Date(currentDate) } })
+            .then((data) =>
+                res.status(200).json(data))
+    } catch (err) {
+        console.log(err)
+    }
+
+})
+
+
 /**Update status of appointement filter by patient ID */
 
-router.put('/update/status/:PID', async (req, res) => {
-    const uid = req.params.PID;
-    const st = req.body.status
-    const findPatient = await appointement.findOne({ uid: uid })
+
+router.post('/update/status/:PID', async (req, res) => {
+    const Inputuid = req.params.PID;
+    const status = req.body.status;
+    const caseDescription = req.body.caseDescription;
+    const appointementDate = req.body.appointementDate;
+    const findPatient = await appointement.findOne({ uid: Inputuid })
+    if (!(findPatient)) {
+        return res.status(404).json({ Message: "No data found with this ID" })
+    }
     const id = findPatient._id
     // const appDate = findPatient.appointementDate
     await appointement.findByIdAndUpdate(id)
         .then(newData => {
-            newData.status = st
+            newData.status = status;
+            newData.caseDescription = caseDescription;
+            newData.appointementDate = appointementDate;
             newData.save()
                 .then((updated) => res.status(200).send("updated"))
-
         })
-
 })
 
 module.exports = router;

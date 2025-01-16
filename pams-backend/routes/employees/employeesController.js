@@ -14,20 +14,19 @@ const userAccount = require('../../models/userAccountModel');
 const verify = require('../../models/verifyModel');
 const employee = require('../../models/employeesModel');
 const counter = require('../../models/counterModel');
-const patient = require('../../models/patientModel');
 
 /**   Fetching employees data********************/
 /*********************************************** */
 router.get('/', (req, res, next) => {
-    try {
-      employee.find()
-        .then((emp) => res.status(200).json(emp))
-    } catch (err) {
-      return next(err)
-    }
-  
-  });
-  
+  try {
+    employee.find()
+      .then((emp) => res.status(200).json(emp))
+  } catch (err) {
+    return next(err)
+  }
+
+});
+
 /******************** Register employee by admin. ************** */
 /************************************************************** */
 
@@ -48,7 +47,6 @@ router.post('/register', async (req, res) => {
   const lastSeq = await counter.findOne({ name: "auto" })
   const autoID = lastSeq.seq;
   // console.log(autoID)
-  
   const uid = autoID;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -61,10 +59,11 @@ router.post('/register', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const role = req.body.role;
+  const accountStatus = req.body.accountStatus;
   var token = randomToken(8)
   //all inputs should exist
   try {
-    if (!(firstName && lastName && gender && address && contactNo && departement && email && password)) {
+    if (!(firstName && lastName && gender && role && address && contactNo && departement && email && password)) {
       return res.status(400).json({ Message: 'please fill required fields' })
     }
     const checkEmp = await employee.findOne({ email: email })
@@ -79,7 +78,7 @@ router.post('/register', async (req, res) => {
       //save data to database
       const newEmployee = new employee({ uid, firstName, lastName, gender, address, contactNo, dob, departement, experienceYear, email, role });
       const newVerify = new verify({ uid: autoID, email, token });
-      const newAcc = new userAccount({ uid: autoID, email, password: encryptPass, role });
+      const newAcc = new userAccount({ uid: autoID, email, password: encryptPass, role: role, accountStatus: accountStatus });
       newEmployee.save();
       newVerify.save();
       newAcc.save();
@@ -130,7 +129,7 @@ router.post('/register/admin', async (req, res) => {
   var token = randomToken(8)
   //all data should exist
   try {
-    if (!(staffCode && firstName && lastName && gender && address && contactNo && departement && email && password)) {
+    if (!(staffCode && firstName && lastName && gender && role && address && contactNo && departement && email && password)) {
       return res.status(400).json({ Message: 'please fill required fields' })
     }
     const check = await employee.findOne({ email: email })
@@ -166,37 +165,75 @@ router.post('/register/admin', async (req, res) => {
 
 /*************  Update Employees by Admin *************************** */
 /****************************************************************** */
-router.post(`/update/:uid`, async (req, res) => {
-  const uid = req.params.uid;
-  const address = req.body.address;
-  const contactNo = req.body.contactNo;
-  const findData = await employee.findOne({ uid: uid })
-  const id = findData._id;
-  await employee.findByIdAndUpdate(id)
-    .then(newData => {
-      newData.address = address;
-      newData.contactNo = contactNo;
-      newData.save()
-        .then((updated) => res.status(200).json({ Message: "Updated", "Data": updated }))
-        // .catch((err) => res.status(500).send(err))
-
-    })
+router.put(`/update/:uid`, async (req, res) => {
+  try {
+    // const Inputuid = req.params.uid;
+    const uu = req.params.uid;
+    const Inputuid = parseInt(uu);
+    
+    //Check if inpute id is number
+    if (isNaN(Inputuid) == true) {
+      return res.status(400).json({ Message: "Invalid ID. Please enter a number." })  // if uid is not a number
+    }
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const gender = req.body.gender;
+    const dob = req.body.dob;
+    const address = req.body.address;
+    const contactNo = req.body.contactNo;
+    const status = req.body.status;
+    const findData = await employee.find({ uid: Inputuid })
+    //Check if data is found
+    if (!(findData)) {
+      return res.status(400).json({ Message: "No data found by this id" })  // if patient data not found
+    } else {
+      const id = findData._id;
+      await employee.findByIdAndUpdate(id)
+        .then(newData => {
+          newData.firstName = firstName;
+          newData.lastName = lastName;
+          newData.gender = gender;
+          newData.dob = dob;
+          newData.address = address;
+          newData.contactNo = contactNo;
+          newData.status = status;
+          newData.save()
+            .then(data => {
+              return res.status(200).json({ Message: "Data Updated" })
+            })
+        })
+    }
+  } catch (err) {
+    console.log("Err" + err)
+  }
 })
-
 /************* Finde an employee by ID**************** */
 /**************************************************** */
 
 router.get('/find/:uid', async (req, res) => {
-  const u = req.params.uid;
-  const uid = parseInt(u)
+  const uu = req.params.uid;
+  const Inputuid = parseInt(uu)
+  // const u = Number(uu);
+  // console.log(typeof(u))
+  if (isNaN(Inputuid) === true) {
+    return res.status(400).json({ Message: "Invalid uid. Please enter a number." })  // if uid is not a number
+  }
+  
   try {
-    const empdata = await employee.findOne({ uid: uid })
-      .then((data) => {
-        res.status(200).json({"Message":"Employees found"})
-      })
+    const checkData = await employee.find({ uid: Inputuid })
+    if (!checkData) {
+      return res.status(400).json({ Message: "Employee not found" })  // if employee not found with this uid
+    } else {
+      employee.find({uid: Inputuid})
+        .then((data) => {
+          res.status(200).json(data);
+          // console.log(data);
+        })
+    }
+
   } catch (err) {
     console.log(err)
   }
 })
 
-  module.exports = router;
+module.exports = router;
