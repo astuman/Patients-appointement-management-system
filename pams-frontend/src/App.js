@@ -2,6 +2,7 @@ import Reac from 'react';
 import { BrowserRouter, Route, Routes, Switch } from 'react-router-dom';
 import Login from './components/login'
 // import DataTable from './components/pages/patients/pp';
+import Home from './components/pages/Home/Home'
 import Logout from './components/logout';
 import Signup from './components/signup';
 import PatientAdminView from './components/pages/patients/patientAdminView';
@@ -36,7 +37,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
         </Routes>
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Home />} />
           {/* <Route path='/pp' element={<DataTable />} /> */}
           <Route path='/employee' element={<EmployeesListPage />} />
           <Route path='/employee/register' element={<RegisterEmployee />} />
