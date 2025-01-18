@@ -6,7 +6,6 @@ const logger = require('morgan');
 const cors = require('cors');
 const mongoose = require("mongoose")
 
-
 //routing
 const indexRouter = require('./routes/index');
 const patientsRouter = require('./routes/patients/patientsController')

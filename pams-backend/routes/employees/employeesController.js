@@ -211,29 +211,44 @@ router.put(`/update/:uid`, async (req, res) => {
 /**************************************************** */
 
 router.get('/find/:uid', async (req, res) => {
-  const uu = req.params.uid;
-  const Inputuid = parseInt(uu)
-  // const u = Number(uu);
-  // console.log(typeof(u))
+  const Inputuid = req.params.uid;
   if (isNaN(Inputuid) === true) {
-    return res.status(400).json({ Message: "Invalid uid. Please enter a number." })  // if uid is not a number
+    return res.status(400).json({ Message: "Invalid ID. Please enter a number." })  // if uid is not a number
   }
-  
   try {
-    const checkData = await employee.find({ uid: Inputuid })
-    if (!checkData) {
-      return res.status(400).json({ Message: "Employee not found" })  // if employee not found with this uid
-    } else {
-      employee.find({uid: Inputuid})
-        .then((data) => {
-          res.status(200).json(data);
-          // console.log(data);
-        })
-    }
-
+    const pdata = await employee.findOne({ uid: Inputuid })
+      .then((data) => {
+        if (data == null) {
+          return res.status(404).json({ Message: "No data found by this id" })  // if patient data not found
+        }
+        else {
+          return res.status(200).json(data)
+        }
+      })
   } catch (err) {
     console.log(err)
   }
 })
+router.get('/find/:email', async (req, res) => {
+  const InputEmail = req.params.email;
+  if(InputEmail === null){
+    return res.status(400).json({ Message: "No parameter to find user." })  // if email is not valid or empty or null.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a number or invalid email.  // if uid is not a
+  }else{
+  try {
+    const pdata = await employee.findOne({ email: InputEmail })
+      .then((data) => {
+        if (data == null) {
+          return res.status(404).json({ Message: "No data found by this email" })  // if patient data not found
+        }
+        else {
+          return res.status(200).json(data)
+        }
+      })
+  } catch (err) {
+    console.log(err)
+  }
+}
+})
+
 
 module.exports = router;

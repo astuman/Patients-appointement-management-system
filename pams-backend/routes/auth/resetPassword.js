@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     // console.log(password)
-    if (!(password && email && uid)) {
+    if (!(password || email || uid)) {
         return res.status(400).json({Messaege:"missing input fields"})
     } else {
         const check = await account.findOne({ email: email })
@@ -19,9 +19,8 @@ router.post('/', async (req, res) => {
             return res.status(400).json({Message:"Email not found"})
         } else {
             const foundUi = check.uid;
-            const foundEmail = check.email;
             const foundId = check._id
-            if (foundUi != uid && foundEmail != email) {
+            if (foundUi != uid ) {
                 return res.status(400).json({Message:"verification error"})
             } else {
                 await account.findByIdAndUpdate(foundId)

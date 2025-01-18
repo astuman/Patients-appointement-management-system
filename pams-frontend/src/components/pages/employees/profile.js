@@ -21,20 +21,18 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 
-
-
-
 export const UpdateProfile = () => {
-  const u = localStorage.getItem('UID');
-  const uid = parseInt(u);
-
+  // console.log(localStorage.getItem("UID"))
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchProfile, setSearchProfile] = useState([]);
   const [error, setError] = useState(false);
   const location = useLocation();
-  // const query = new URLSearchParams(location.search).get("uid");
+  const query = new URLSearchParams(location.search).get("uid");
+  const u = localStorage.getItem('UID');
   // console.log(drId)
-  const [ui, setUid] = useState(uid);
+  const [uid, setUid] = useState(u);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -43,31 +41,14 @@ export const UpdateProfile = () => {
   const [dob, setDob] = useState('');
   const [contactNo, setContactNo] = useState('');
   const [status, setStatus] = useState('');
-  // const Inputuid = parseInt(uid)
-  // console.log(localStorage.getItem("UID"))
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(FilterEmployee())
-  }, []);
-
-  const emp = useSelector(state => state.rootEmployeeFilter.filter)
-  const rows = useMemo(() => emp.map((row, index) => ({ ...row, id: row.uid })),
-    [emp]
-  );
-
-  
-
+  const Inputuid = parseInt(uid);
 
   useEffect(() => {
     const searchProfile = async () => {
-      if (uid == null) {
-        alert(("please login first"))
-        navigate('/login')
-
-      } else {
+      if (localStorage.getItem("UID") !== null) {
+        // const ID = parseInt(I)
         try {
-          const datas = await api.get(`/employee/find/${uid}`)
+          const datas = await api.get(`/employee/find/${Inputuid}`)
           setUid(datas.data.uid)
           setFirstName(datas.data.firstName)
           setLastName(datas.data.lastName)
@@ -76,42 +57,34 @@ export const UpdateProfile = () => {
           setAddress(datas.data.address)
           setContactNo(datas.data.contactNo)
           setDob(datas.data.dob)
-          console.log(uid)
-
         } catch (error) {
           setError(error.response?.data?.message);
         }
-
       };
-
     }
-
     searchProfile();
+    
   }, []);
 
-
-
   const handleUpdate = (e) => {
-    
     const datas = {
-      firstName: firstName,
-      lastName: lastName,
-      gender: gender,
-      dob: dob,
+      uid: uid,
+      firstName:firstName,
+      lastName:lastName,
+      gender:gender,
+      dob:dob,
       address: address,
       contactNo: contactNo,
     }
- 
-    api.put(`/employee/update/${uid}`, datas)
-      .then((res) => res.status == 200 ? (dispatch(setSearchProfile())) : "")
+    api.put(`/employee/update/${Inputuid}`, datas)
+      .then((res) => res.status ? (dispatch(setSearchProfile())) : "")
       .catch(err => console.log(err))
-    alert("Update profile success")
-    // navigate(`/result/patient/${uid}`)
-
+      alert("Update profile success")
+      navigate(`/patient`)
+      
   }
 
   const theme = createTheme();
-
   return (
     <Container maxWidth="lg" sx={{ mt: 2, mb: 4 }}>
       <Navbar />
@@ -119,7 +92,7 @@ export const UpdateProfile = () => {
         <Grid item xs={12} md={12} lg={12} mt={1} >
           <Paper
             sx={{
-              mt: 2,
+              mt:2,
               p: 2,
               display: 'flex',
               flexDirection: 'column',
@@ -128,117 +101,118 @@ export const UpdateProfile = () => {
               border: 2,
               alignItems: 'center',
             }}>
-            {emp.map((emp, index) => {
-              return (
-                <div key={index}>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      readOnly
-                      required
-                      fullWidth
-                      id="uid"
-                      label="First Name"
-                      value={emp.uid}
-                    />
-                  </Grid>
+            <div >
+    
+            <Grid item xs={12} md={12} lg={10} mt={2} >
+            <TextField
+                  autoComplete="given-name"
+                  // name="firstName"
+                  required
+                  fullWidth
+                  id="uid"
+                  label="ID Number"
+                  disabled
+                  value={uid}
+                  onChange={(e) => setUid(e.target.value)}
+                />
+              </Grid>
 
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="First Name"
-                      value={emp.firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="Last Name"
-                      value={emp.lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="Email"
-                      value={emp.email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="Gender"
-                      value={emp.gender}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="Address"
-                      value={emp.address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="Contact No."
-                      value={emp.contactNo}
-                      onChange={(e) => setContactNo(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2} >
-                    <TextField
-                      autoComplete="given-name"
-                      // name="firstName"
-                      required
-                      fullWidth
-                      id="uid"
-                      label="Birth Date"
-                      value={emp.dob}
-                      onChange={(e) => setDob(e.target.value)}
-                    />
-                  </Grid>
-                </div>
-              )
-            })}
-            <Button onClick={handleUpdate}>Update Profile</Button>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              <TextField
+                  autoComplete="given-name"
+                  // name="firstName"
+                  required
+                  fullWidth
+                  id="uid"
+                  label="First Name"
+                  disabled
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  disabled
+                  autoComplete="family-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              <TextField
+                  id="outlined-controlled"
+                  type='date'
+                  label="Age"
+                  disabled
+                  value={dob}
+                /><br />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              Gender
+                <Select
+                  labelId="select-label"
+                  required
+                  id="gender-select"
+                  label="Health status"
+                  disabled
+                  value={gender}
+                >
+                  <MenuItem value={'male'}>Male</MenuItem>
+                  <MenuItem value={'female'}>Female</MenuItem>
+                </Select><br />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              <TextField
+                  required
+                  fullWidth
+                  id="address"
+                  label="Address"
+                  // name="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              <TextField
+                  required
+                  fullWidth
+                  type='Phone'
+                  id="contactNo"
+                  label="Contact No"
+                  // name="contactNo"
+                  value={contactNo}
+                  inputProps={{ maxLength: 10 }}
+                  onChange={(e) => setContactNo(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} md={12} lg={12} mt={2} >
+              <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  // name="email"
+                  autoComplete="email"
+                  value={email}
+                  disabled
+                />
+              </Grid>
+              <Button onClick={handleUpdate}>Update Profile</Button>
 
+
+            </div>
           </Paper>
         </Grid>
+        {/* )} */}
       </Grid>
-
     </Container>
-  );
-}
 
+  );
+  
+}
 
 export default UpdateProfile;

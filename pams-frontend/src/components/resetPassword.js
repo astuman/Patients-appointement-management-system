@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 
+
 export const Resetpassword = () => {
   const navigate = useNavigate()
   const [uid, setUid] = useState('')
@@ -18,15 +19,20 @@ export const Resetpassword = () => {
   const [cpassword, setCpassword] = useState('')
   const [verification, setVerification] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit =  () => {
     const datas = {
       uid: uid,
       email: email,
       password: password
     }
+  //  const user = api.get(`employee/find/${email}`)
+  //   if(!(user)){
+  //     alert("Invalid Email")
+  //   }else{
+    
       if (password !== cpassword) {
         alert("different passwords")
-      } else if (email == null || verification == null || password == null || cpassword == null) {
+      } else if (email === "" || uid === "" || password === "" || cpassword === "") {
         alert("all fields are required")
         navigate('#')
       } else {
@@ -34,7 +40,7 @@ export const Resetpassword = () => {
         api.post('/resetpassword', (datas))
         .then(res =>{
           alert("success")
-          navigate('/')
+          navigate('/login')
                  })
       } catch (err) {
         console.log(err)
@@ -70,8 +76,9 @@ export const Resetpassword = () => {
             name="email"
             autoComplete='off'
             type='email'
-            onChange={(e) => setEmail(e.target.value)}
             autoFocus
+            onChange={(e) => setEmail(e.target.value)}
+
           />
           <TextField
             margin="normal"

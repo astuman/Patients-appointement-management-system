@@ -28,9 +28,9 @@ export const UpdateProfilePatient = () => {
   const [error, setError] = useState(false);
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("uid");
-  const storageID = localStorage.getItem('UID');
+  const u = localStorage.getItem('UID');
   // console.log(drId)
-  const [uid, setUid] = useState(storageID);
+  const [uid, setUid] = useState(u);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
