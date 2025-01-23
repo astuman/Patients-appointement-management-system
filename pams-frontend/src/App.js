@@ -39,30 +39,34 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           {/* <Route path='/pp' element={<DataTable />} /> */}
+          <Route path='/signup/admin' element={<RegisterStaffAdmin />} /> 
+
           <Route path='/employee' element={<EmployeesListPage />} />
           <Route path='/employee/register' element={<RegisterEmployee />} />
-          <Route path='/signup/admin' element={<RegisterStaffAdmin />} /> 
           <Route path='/employee/update/:uid' element={<UpdateProfile />} />
           <Route path="employee/register/admin" element={<RegisterStaffAdmin />} />
+          <Route path='employee/find/:EID' element={<ViewSingleEmployee />} />
+
           <Route path='/patientadminview' element={<PatientAdminView />} />
           <Route path='/patientview' element={<SinglePatient />} />
           <Route path='/patient' element={<PatientsListPage />} />
           <Route path='/patient/update/:uid' element={<UpdateProfilePatient />} />
           <Route path='patient/find/status/:status' element={<PatientsListPage />} />
           <Route path='patient/find/:PID' element={<AddResult />} />
+
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/result/patient/:uid' element={<ResultPatientView />} />
           <Route path='/result' element={<ResultListPage />} />
+          <Route path='result/find/:PID' element={<AddMoreResult />} />
+
           <Route path='/appointement' element={<Appointements />} />
           <Route path='/appointement/find/:tid' element={<AddMoreResult />} />
           <Route path='/appointement/patient/:uid' element={<AppointementPatientView />} />
-          <Route path='result/find/:PID' element={<AddMoreResult />} />
 
-          <Route path='employee/find/:EID' element={<ViewSingleEmployee />} />
           <Route path='/user' element={<UsersListPage />} />
           <Route path='/user/blockedaccounts' element={<BlockedUsers />} />
-
           <Route path='/user/updateaccount/:uid' element={<UpdateAccount />} />
+
           <Route path='/resetpassword' element={<Resetpassword />} />
 
           {/* <Route path='*' element={<div><h1>404 <br />Page not found</h1></div>} /> */}

@@ -98,7 +98,6 @@ router.get('/', async (req, res, next) => {
     return next(err)
   }
 })
-
 /**Find single patient by id */
 router.get('/find/:uid', async (req, res) => {
   const Inputuid = req.params.uid;

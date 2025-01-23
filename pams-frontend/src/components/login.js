@@ -49,9 +49,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email || !password) {
-        alert("uername and passsord are required")
-        navigate('/login')
-      }
+      alert("uername and passsord are required")
+      navigate('/login')
+    }
     try {
       await api.post('/login', datas)
         .then(res => {
@@ -59,11 +59,11 @@ const Login = () => {
             alert("uername and passsord is required")
             navigate('/login')
           } else {
-            if(res.data.status === 'blocked')
-            alert("Your account status is "+res.data.status)
-             else if(res.data.email === undefined) {
+            if (res.data.status === 'blocked')
+              alert("Your account status is " + res.data.status)
+            else if (res.data.email === undefined) {
               alert('email or password error')
-            }else{
+            } else {
               RemoveCookie("user")
               localStorage.removeItem('PID')
               localStorage.removeItem('role')
@@ -94,7 +94,7 @@ const Login = () => {
     }
 
   }
-  const Home =()=>{
+  const Home = () => {
     navigate('/')
   }
 
@@ -117,7 +117,7 @@ const Login = () => {
     <div>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" >
-          
+
           <form>
             <CssBaseline />
             <Box
@@ -135,9 +135,6 @@ const Login = () => {
               <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
-              <Button color='primary' bgcolor='White' on onClick={Home}>
-            Go Back
-          </Button>
 
               <Box maxWidth={300}>
                 <TextField
@@ -175,12 +172,20 @@ const Login = () => {
                 >
                   Sign In
                 </Button>
+                <Button color='primary'
+                  bgcolor='White'
+                  fullWidth
+                  variant="contained"
+                  on onClick={Home}>
+                  Go Back
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="/resetpassword" variant="body2">
                       Forgot password?
                     </Link>
                   </Grid>
+
                   <Grid item>
                     <Link href="/signup" variant="body2">
                       {"Don't have an account? Sign Up"}

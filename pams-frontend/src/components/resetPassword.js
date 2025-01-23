@@ -95,6 +95,9 @@ export const Resetpassword = () => {
       }
     }
   }
+  const Home = () => {
+    navigate('/')
+  }
 
   return (
     <Container component="main" maxWidth="xs" >
@@ -111,6 +114,7 @@ export const Resetpassword = () => {
           maskPosition: 2
         }}
       >
+
         <Typography component="h1" variant="h5" >
           Reset password
         </Typography>
@@ -168,6 +172,13 @@ export const Resetpassword = () => {
             onClick={handleSubmit}
           >
             Reset Passowrd
+          </Button >
+          <Button color='primary'
+            bgcolor='White'
+            fullWidth
+            variant="contained"
+            on onClick={Home}>
+            Go Back
           </Button>
         </Box>
       </Box>

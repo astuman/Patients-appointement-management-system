@@ -44,7 +44,6 @@ export const UpdateProfilePatient = () => {
   useEffect(() => {
     const searchProfile = async () => {
       if (localStorage.getItem("UID") !== null) {
-        // const ID = parseInt(I)
         try {
           const datas = await api.get(`/patient/find/${Inputuid}`)
           setUid(datas.data.uid)
@@ -109,8 +108,8 @@ export const UpdateProfilePatient = () => {
                   fullWidth
                   id="uid"
                   label="ID Number"
-                  autoFocus
                   value={uid}
+                  disabled
                   onChange={(e) => setUid(e.target.value)}
                 />
               </Grid>
@@ -195,7 +194,7 @@ export const UpdateProfilePatient = () => {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  // name="email"
+                  disabled
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

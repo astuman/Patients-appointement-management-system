@@ -63,7 +63,7 @@ export default function SignUp() {
     accountStatus: "verified"
   }
 
-  const Home =()=>{
+  const Home = () => {
     navigate('/')
   }
 
@@ -105,7 +105,7 @@ export default function SignUp() {
       <Container component="main" maxWidth="xs">
 
         <CssBaseline />
-        
+
         <Box
           sx={{
             marginTop: 8,
@@ -115,9 +115,13 @@ export default function SignUp() {
           }}
         >
 
-            <Button justifyContent color='primary' onClick={Home}>
-              Go Back
-            </Button>
+          <Button color='primary'
+            bgcolor='White'
+            fullWidth
+            variant="contained"
+            on onClick={Home}>
+            Go Back
+          </Button>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

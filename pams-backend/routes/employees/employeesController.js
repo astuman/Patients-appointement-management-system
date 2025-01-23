@@ -167,10 +167,9 @@ router.post('/register/admin', async (req, res) => {
 /****************************************************************** */
 router.put(`/update/:uid`, async (req, res) => {
   try {
-    const uu = req.params.uid;
-    const Inputuid = parseInt(uu);
-
-    if (isNaN(Inputuid) == true) {
+    const Inputuid = req.params.uid;
+    //Check if inpute id is number
+    if (isNaN(Inputuid) === true) {
       return res.status(400).json({ Message: "Invalid ID. Please enter a number." })  // if uid is not a number
     }
     const firstName = req.body.firstName;
@@ -180,7 +179,7 @@ router.put(`/update/:uid`, async (req, res) => {
     const address = req.body.address;
     const contactNo = req.body.contactNo;
     const status = req.body.status;
-    const findData = await employee.find({ uid: Inputuid })
+    const findData = await employee.findOne({ uid: Inputuid })
     //Check if data is found
     if (!(findData)) {
       return res.status(400).json({ Message: "No data found by this id" })  // if patient data not found
@@ -197,7 +196,7 @@ router.put(`/update/:uid`, async (req, res) => {
           newData.status = status;
           newData.save()
             .then(data => {
-              return res.status(200).json({ Message: "Data Updated" })
+              return res.status(200).json({ Message: "Data Updated", data })
             })
         })
     }
@@ -207,7 +206,6 @@ router.put(`/update/:uid`, async (req, res) => {
 })
 /************* Finde an employee by ID**************** */
 /**************************************************** */
-
 router.get('/find/:uid', async (req, res) => {
   const Inputuid = req.params.uid;
   if (isNaN(Inputuid) === true) {

@@ -53,10 +53,20 @@ app.use('/logout', logoutRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/resetpassword', restpassword);
 
-// URI = `mongodb+srv://loloalex1992:1992@cluster1.ktaj7jh.mongodb.net/?retryWrites=true&w=majority`
-const URI = "mongodb://localhost:27017/pams";
+const URI = `mongodb+srv://loloalex1992:<8498@Lolo>@cluster1.ktaj7jh.mongodb.net/`
+// const URI = "mongodb://localhost:27017/pams";
 // const conn = mongoose.connect(URI,{})
-const conn = mongoose.connect('mongodb://127.0.0.1:27017/pams');
+// const conn = mongoose.connect('mongodb://127.0.0.1:27017/pams');
+const conn = mongoose.connect('mongodb://localhost/mydatabase', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('Connected to MongoDB');
+})
+.catch((error) => {
+  console.error('Error connecting to MongoDB:', error);
+});
 const connection = mongoose.connection;
 
 if(conn){

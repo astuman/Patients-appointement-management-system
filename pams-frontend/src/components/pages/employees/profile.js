@@ -10,15 +10,13 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Navbar from '../navbar/navbar';
-import { FilterEmployee } from '../../../action/action';
-import { DataGrid } from '@mui/x-data-grid';
-import { TextFieldProps } from "@material-ui/core";
+import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Navbar from '../navbar/navbar';
 
 
 export const UpdateProfile = () => {
@@ -46,7 +44,6 @@ export const UpdateProfile = () => {
   useEffect(() => {
     const searchProfile = async () => {
       if (localStorage.getItem("UID") !== null) {
-        // const ID = parseInt(I)
         try {
           const datas = await api.get(`/employee/find/${Inputuid}`)
           setUid(datas.data.uid)
@@ -80,7 +77,6 @@ export const UpdateProfile = () => {
       .then((res) => res.status ? (dispatch(setSearchProfile())) : "")
       .catch(err => console.log(err))
       alert("Update profile success")
-      navigate(`/patient`)
       
   }
 
@@ -111,8 +107,8 @@ export const UpdateProfile = () => {
                   fullWidth
                   id="uid"
                   label="ID Number"
-                  disabled
                   value={uid}
+                  disabled
                   onChange={(e) => setUid(e.target.value)}
                 />
               </Grid>
@@ -136,7 +132,7 @@ export const UpdateProfile = () => {
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  disabled
+                  disabled 
                   autoComplete="family-name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
@@ -147,8 +143,10 @@ export const UpdateProfile = () => {
                   id="outlined-controlled"
                   type='date'
                   label="Age"
-                  disabled
                   value={dob}
+                  onChange={(e) => {
+                    setDob(e.target.value);
+                  }}
                 /><br />
               </Grid>
               <Grid item xs={12} md={12} lg={12} mt={2} >
@@ -158,8 +156,8 @@ export const UpdateProfile = () => {
                   required
                   id="gender-select"
                   label="Health status"
-                  disabled
                   value={gender}
+                  onChange={e => setGender(e.target.value)}
                 >
                   <MenuItem value={'male'}>Male</MenuItem>
                   <MenuItem value={'female'}>Female</MenuItem>
@@ -195,10 +193,10 @@ export const UpdateProfile = () => {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  // name="email"
+                  disabled
                   autoComplete="email"
                   value={email}
-                  disabled
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Button onClick={handleUpdate}>Update Profile</Button>
@@ -214,5 +212,4 @@ export const UpdateProfile = () => {
   );
   
 }
-
 export default UpdateProfile;
