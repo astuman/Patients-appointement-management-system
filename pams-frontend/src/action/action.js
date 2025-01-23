@@ -61,15 +61,14 @@ export const FilterPatientByStatus =()=> async dispatch =>{
                 type:FILTER_PATIENT_BY_STATUS,
                 payload:res.data
             })
-        })
-         
+        })        
     }catch(err){
         console.log({err})
     }
 }
 
 export const FilterEmployee =()=> async dispatch =>{
-    const uid = localStorage.getItem("drId")
+    const uid = localStorage.getItem("EID")
     try{
         api.get(`/employee/find/${uid}`)
         .then(res=>{
@@ -77,11 +76,9 @@ export const FilterEmployee =()=> async dispatch =>{
                 type:FILTER_EMPLOYEE,
                 payload:res.data
             })
-            console.log(res.data)
+            
 
         })
-
-         
     }catch(err){
         console.log({err})
     }
@@ -235,7 +232,6 @@ export const FilterResultByDoctorAppoForPatientView =()=> async dispatch =>{
             type:FILTER_RESULT_BY_DOCTOR_APPO_FOR_PATIENT,
             payload:res.data
         })
-        console.log(res.data)
     })
 }catch(err){
     console.log(err)

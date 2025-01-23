@@ -35,6 +35,7 @@ function Copyright(props) {
   );
 }
 
+
 const theme = createTheme();
 
 export default function SignUp() {
@@ -62,13 +63,17 @@ export default function SignUp() {
     accountStatus: "verified"
   }
 
+  const Home =()=>{
+    navigate('/')
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
 
     if (!(data.firstName && data.lastName && data.email && data.gender && data.address && data.dob && data.contactNo && data.password)) {
-       alert('All fields are required')      
-    } else{
+      alert('All fields are required')
+    } else {
       try {
         if (password !== cpassword) {
           alert('Mismach password')
@@ -77,12 +82,12 @@ export default function SignUp() {
             .then((res) => {
               if (res.status === 200) {
                 alert('Registered! Please login')
-                  navigate('/login')
+                navigate('/login')
               }
-              else if (res.status ===(400)){
-                alert('Some fields are required')               
+              else if (res.status === (400)) {
+                alert('Some fields are required')
               }
-              else{
+              else {
                 console.log("error", res.status)
               }
             })
@@ -91,14 +96,16 @@ export default function SignUp() {
       catch (err) {
         console.log(err)
       }
-      
+
     };
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+
         <CssBaseline />
+        
         <Box
           sx={{
             marginTop: 8,
@@ -107,13 +114,17 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
+
+            <Button justifyContent color='primary' onClick={Home}>
+              Go Back
+            </Button>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box>
+          <Box border={'ActiveBorder'}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField

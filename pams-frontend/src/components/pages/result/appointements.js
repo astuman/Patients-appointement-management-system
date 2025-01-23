@@ -35,11 +35,7 @@ export const Appointement = () => {
   const filterRows = useMemo(() => FilterAppo.map((row, index) => ({ ...row, id: row.transactionId })),
     [FilterAppo]
   );
-
-
-
-
-
+  
   const columns = [
     { field: 'id', headerName: 'Order ID', width: 50 },
     { field: 'uid', headerName: 'Patient ID', width: 80 },

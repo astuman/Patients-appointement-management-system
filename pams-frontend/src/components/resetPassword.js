@@ -42,20 +42,19 @@ export const Resetpassword = () => {
       try {
         const user = api.get(`/employee/find/${u}`)
           .then((res) => {
-            if (user) {
+            if (user !== null) {
               const e = res.data.email
               const id = res.data.uid
               if (e !== email) {
                 alert("Invalid Email")
-              }else{
+              } else {
                 api.post('/resetpassword', (datas))
-                .then(res => {
-                  alert("success")
-                  navigate('/login')
-                })
-            }
-              
-            } else if (!(user)) {
+                  .then(res => {
+                    alert("success")
+                    navigate('/login')
+                  })
+              }
+            } if (res.status === 404) {
               api.get(`/employee/find/${email}`)
                 .then((res) => {
                   const id = res.data.uid
@@ -68,93 +67,111 @@ export const Resetpassword = () => {
                         navigate('/login')
                       })
                   }
-                
+
                 })
+            }
+          })
 
-      }})
+        // if (!(user)) {
+        //   api.get(`/employee/find/${email}`)
+        //     .then((res) => {
+        //       const id = res.data.uid
+        //       if (id !== uid) {
+        //         alert("Invalid ID")
+        //       } else {
+        //         api.post('/resetpassword', (datas))
+        //           .then(res => {
+        //             alert("success")
+        //             navigate('/login')
+        //           })
+        //       }
 
-  } catch (err) {
-    console.log(err)
+        //     })
+
+        // }
+
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
-}
-  }
 
-return (
-  <Container component="main" maxWidth="xs" >
-    <CssBaseline />
-    <Box
-      sx={{
-        marginTop: 8,
-        maxWidth: 550,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        border: 0.5,
-        borderRadius: 5,
-        maskPosition: 2
-      }}
-    >
-      <Typography component="h1" variant="h5" >
-        Reset password
-      </Typography>
-      <Box maxWidth={300}>
-        <TextField
-          margin="normal"
-          required="true"
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete='off'
-          type='email'
-          autoFocus
-          onChange={(e) => setEmail(e.target.value)}
+  return (
+    <Container component="main" maxWidth="xs" >
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          maxWidth: 550,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          border: 0.5,
+          borderRadius: 5,
+          maskPosition: 2
+        }}
+      >
+        <Typography component="h1" variant="h5" >
+          Reset password
+        </Typography>
+        <Box maxWidth={300}>
+          <TextField
+            margin="normal"
+            required="true"
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete='off'
+            type='email'
+            autoFocus
+            onChange={(e) => setEmail(e.target.value)}
 
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="uid"
-          label="Verification code"
-          name="uid"
-          autoComplete='off'
-          type='Number'
-          onChange={(e) => setUid(e.target.value)}
-          autoFocus
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-          autoComplete="off"
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="cpassword"
-          label="Confirm Password"
-          type="password"
-          onChange={(e) => setCpassword(e.target.value)}
-          autoComplete="off"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleSubmit}
-        >
-          Reset Passowrd
-        </Button>
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="uid"
+            label="Verification code"
+            name="uid"
+            autoComplete='off'
+            type='Number'
+            onChange={(e) => setUid(e.target.value)}
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="off"
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="cpassword"
+            label="Confirm Password"
+            type="password"
+            onChange={(e) => setCpassword(e.target.value)}
+            autoComplete="off"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
+          >
+            Reset Passowrd
+          </Button>
+        </Box>
       </Box>
-    </Box>
-  </Container>
-);
+    </Container>
+  );
 }
 export default Resetpassword

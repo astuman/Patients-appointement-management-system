@@ -94,6 +94,9 @@ const Login = () => {
     }
 
   }
+  const Home =()=>{
+    navigate('/')
+  }
 
 
   function Copyright(props) {
@@ -110,23 +113,13 @@ const Login = () => {
   }
 
   const theme = createTheme();
-
-  // const handleSubmit2 = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // }
-
   return (
     <div>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" >
+          
           <form>
             <CssBaseline />
-            
             <Box
               sx={{
                 marginTop: 20,
@@ -142,6 +135,9 @@ const Login = () => {
               <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
+              <Button color='primary' bgcolor='White' on onClick={Home}>
+            Go Back
+          </Button>
 
               <Box maxWidth={300}>
                 <TextField

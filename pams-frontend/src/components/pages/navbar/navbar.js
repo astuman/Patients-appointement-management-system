@@ -26,7 +26,7 @@ import {
   Users,
   FilterUserByStatus,
   FilterPatientByStatus,
-  FilterResultByPatient, Results, FilterResultByDoctor,FilterResultByDoctorAppo,FilterResultByDoctorAppoForPatientView
+  FilterResultByPatient, Results, FilterResultByDoctor, FilterResultByDoctorAppo, FilterResultByDoctorAppoForPatientView
 } from '../../../action/action'
 
 
@@ -92,8 +92,8 @@ export default function Navbar() {
   useEffect(() => { dispatch(FilterUserByStatus()) }, [])
   useEffect(() => { dispatch(FilterResultByDoctor()) }, [])
   useEffect(() => { dispatch(FilterResultByPatient()) }, [])
-  useEffect(() => { dispatch(FilterResultByDoctorAppo())}, [])
-  useEffect(() =>  { dispatch(FilterResultByDoctorAppoForPatientView())},[])
+  useEffect(() => { dispatch(FilterResultByDoctorAppo()) }, [])
+  useEffect(() => { dispatch(FilterResultByDoctorAppoForPatientView()) }, [])
 
   const emp = useSelector(state => state.rootEmployeeList.employees)
   const user = useSelector(state => state.rootUserList.user)
@@ -104,6 +104,7 @@ export default function Navbar() {
   const filterResultByPatient = useSelector(state => state.rootResultFilterByPatient.caseResult);
   const newPatient = useSelector(state => state.rootPatientListByStatus.patients)
   const filterAppointement = useSelector(state => state.rootResultByDoctorAppoForPatientView.caseResult)
+  const filterAppoByDoctor = useSelector(state => state.rootResultFilterByDoctorAppo.caseResult)
   // const ViewedPatient = useSelector(state=>state.rootPatientViewed.patients)
   const userFilterRows = useMemo(() => userFilter.map((rowUfil, index) => ({ ...rowUfil, id: rowUfil.uid })), [userFilter]);
 
@@ -177,9 +178,9 @@ export default function Navbar() {
   //  const del = Confirm("aryou sure")
 
   const logout = () => {
-    if(userRole === 'patient'){  
-    navigate('/')
-    }else if(userRole === 'doctor' ||userRole === 'admin'){ 
+    if (userRole === 'patient') {
+      navigate('/')
+    } else if (userRole === 'doctor' || userRole === 'admin') {
       navigate('/logout')
     }
   }
@@ -419,7 +420,7 @@ export default function Navbar() {
                 onClick={gotoAppointements}
               >
 
-                <Badge badgeContent={0} color="error">
+                <Badge badgeContent={filterAppoByDoctor.length} color="error">
                   Appointements
                 </Badge>
               </IconButton>

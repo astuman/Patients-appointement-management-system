@@ -2,7 +2,8 @@ import { FETCH_EMPLOYEES, ADD_EMPLOYEES,FILTER_EMPLOYEE } from "../action/action
 
 const initialState = {
     employees: [],
-    filter:[]
+    filterEmp: [],
+    
 }
 export const EmployeeReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -14,14 +15,14 @@ export const EmployeeReducer = (state = initialState, action) => {
         default:
             return state
     }
-
+    
 }
 export const FilterEmployeeReducer = (state = initialState, action) => {
     switch (action.type) {
         case FILTER_EMPLOYEE:
             return ({
                 ...state,
-                filter: action.payload
+                filterEmp: action.payload
             })
         default:
             return state

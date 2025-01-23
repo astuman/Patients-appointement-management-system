@@ -103,9 +103,9 @@ import Stack from '@mui/material/Stack';
         const update = (e) => {
           const currentRow = params.row;
           const i = currentRow.doctorId;
-          localStorage.removeItem("drId")
-          localStorage.setItem("drId", i);
-          const getId = localStorage.getItem("drId")
+          localStorage.removeItem("EID")
+          localStorage.setItem("EID", i);
+          const getId = localStorage.getItem("EID")
           navigate(`/employee/find/${i}`)
           // return alert(JSON.stringify(currentRow.caseDescription, null, 4));
         };
