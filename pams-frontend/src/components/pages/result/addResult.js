@@ -171,9 +171,12 @@ export const AddResult = () => {
                 label="Health status"
                 onChange={e => setHealthStatus(e.target.value)}
               >
-                <MenuItem value={'HIV'}>HIV</MenuItem>
-                <MenuItem value={'Blood Check'}>Blood Check</MenuItem>
-                <MenuItem value={'Covid 19'}>Covid 19</MenuItem>
+                <MenuItem value={'Not Jutified'}>Not Jutified</MenuItem>
+                <MenuItem value={'Eye Care'}>Eye Care</MenuItem>
+                <MenuItem value={'Neurology'}>Neurology</MenuItem>
+                <MenuItem value={'Cardiac care'}>Cardiac care</MenuItem>
+                <MenuItem value={'Heart care'}>Heart care</MenuItem>
+                
               </Select><br />
               <TextareaAutosize
                 id="outlined-controlled"
