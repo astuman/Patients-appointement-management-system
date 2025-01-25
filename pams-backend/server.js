@@ -53,14 +53,11 @@ app.use('/logout', logoutRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/resetpassword', restpassword);
 
-const URI = `mongodb+srv://loloalex1992:<8498@Lolo>@cluster1.ktaj7jh.mongodb.net/`
+const URI = `mongodb+srv://pams-user:199227@cluster1.ktaj7jh.mongodb.net/`
 // const URI = "mongodb://localhost:27017/pams";
 // const conn = mongoose.connect(URI,{})
 // const conn = mongoose.connect('mongodb://127.0.0.1:27017/pams');
-const conn = mongoose.connect('mongodb://localhost/mydatabase', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+const conn = mongoose.connect(URI)
 .then(() => {
   console.log('Connected to MongoDB');
 })
