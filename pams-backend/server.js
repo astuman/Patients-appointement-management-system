@@ -53,6 +53,7 @@ app.use('/logout', logoutRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/resetpassword', restpassword);
 
+
 const URI = `mongodb+srv://pams-user:199227@cluster1.ktaj7jh.mongodb.net/pams?retryWrites=true&w=majority&appName=Cluster1`
 // const URI = "mongodb://localhost:27017/pams";
 // const conn = mongoose.connect(URI,{})
