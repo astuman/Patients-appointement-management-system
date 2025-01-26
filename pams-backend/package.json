@@ -4,7 +4,8 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./bin/www",
-        "build": "react-scripts build"
+        "build": "react-scripts build",
+        "preinstall": "npx npm-force-resolutions"
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.3",
@@ -51,5 +52,9 @@
         "cors": "^2.8.5",
         "express": "^4.19.2",
         "react-scripts": "^5.0.1"
-    }
+    },
+    "resolutions": {
+  "mongoose-auto-increment": "^5.0.1"
+}
+
 }
