@@ -28,7 +28,7 @@
         "jsonwebtoken": "^9.0.0",
         "moment": "^2.29.4",
         "mongodb": "^5.1.0",
-        "mongoose": "^5.7.5",
+        "mongoose": "^7.8.6",
         "mongoose-auto-increment": "^5.0.1",
         "mongoose-sequence": "^5.3.1",
         "morgan": "~1.9.1",
@@ -46,7 +46,10 @@
         "run": "^1.5.0",
         "sib-api-v3-sdk": "^8.5.0",
         "socket.io": "^2.3.0",
-        "sweetalert2": "^9.8.2"
+        "sweetalert2": "^9.8.2",
+        "react": "^17.0.0",
+        "react-dom": "^17.0.0",
+        "react-scripts": "5.0.1"
     },
     "devDependencies": {
         "cors": "^2.8.5",
